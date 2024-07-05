@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { EnumDeliveryStatus } from "../types/staffTypes";
 @Entity({ name: "deliveries" })
-export class DeliveriedEntity {
+export class DeliveriesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
