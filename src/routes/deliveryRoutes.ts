@@ -7,4 +7,7 @@ deliveryRouter.post("/getAlldeliveries", DeliveryController.getAllDeliveries);
 
 deliveryRouter.post("/createDelivery", DeliveryController.createDelivery);
 
-// deliveryRouter.post("/updateDeliveryStatus", DeliveryController.updateDeliveryStatus);
+deliveryRouter.post(
+  "/updateDeliveryStatus",
+  DeliveryController.updateDeliveryStatus
+);

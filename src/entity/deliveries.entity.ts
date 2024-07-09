@@ -2,10 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { EnumDeliveryStatus } from "../types/staffTypes";
+import { EnumDeliveryStatus } from "../types/RestaurentsTypes";
+import { OrdersEntity } from "./orders.entity";
+
 @Entity({ name: "deliveries" })
 export class DeliveriesEntity {
   @PrimaryGeneratedColumn()
@@ -19,11 +23,13 @@ export class DeliveriesEntity {
 
   @Column({
     type: "timestamp",
+    nullable: true,
   })
   pickupTime: Date;
 
   @Column({
     type: "timestamp",
+    nullable: true,
   })
   deliveryTime: Date;
 
@@ -35,6 +41,10 @@ export class DeliveriesEntity {
     enum: EnumDeliveryStatus,
   })
   status: string;
+
+  @OneToOne(() => OrdersEntity, (order) => order.id)
+  @JoinColumn()
+  order: OrdersEntity;
 
   @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
