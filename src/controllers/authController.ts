@@ -9,20 +9,20 @@ export class AuthController {
         throw new Error("Invalid UserName or Password");
       }
       const { userData, token } = await AuthService.verifyPassword({
-        userName: verifiedDetails.data.userName,
+        email: verifiedDetails.data.email,
         password: verifiedDetails.data.password,
       });
-      res.cookie("authToken", token);
+      res.cookie("staffAuthToken", token);
       return res.json({
         result: userData,
-        error: null,
+        success: true,
         errorMessage: null,
       });
     } catch (err: any) {
       return res.json({
         result: null,
         success: false,
-        errorMessage: err.errors || "something went wrong",
+        errorMessage: err.message || "something went wrong",
       });
     }
   };

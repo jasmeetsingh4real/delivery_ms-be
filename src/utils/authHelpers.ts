@@ -9,7 +9,10 @@ const hashAsync = promisify(bcrypt.hash);
 
 export class authHelper {
   static getStaffAuthToken = (user: Partial<RestaurantStaffEntity>) => {
-    const token = jwt.sign(user, process.env.JWT_STAFF_SECRET_KEY);
+    const token = jwt.sign(
+      { ...user, createdAt: null },
+      process.env.JWT_STAFF_SECRET_KEY
+    );
     return token;
   };
   static getChefAuthToken = (user: Partial<RestaurantStaffEntity>) => {
