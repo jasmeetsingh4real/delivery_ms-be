@@ -5,4 +5,4 @@ export const authRouter = express.Router();
 
 authRouter.post("/login", AuthController.loginUser);
 
-// authRouter.post("/verifyAuthToken", AuthController.verifyAuthToken);
+authRouter.post("/verifyStaffAuthToken", AuthController.verifyStaffAuthToken);

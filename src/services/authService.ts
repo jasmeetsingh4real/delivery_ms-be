@@ -2,6 +2,7 @@ import { dataSource } from "../db/datasource/app_data_source";
 import { RestaurantStaffEntity } from "../entity/restaurantStaff.entity";
 import { EnumStaffRoles } from "../types/staffTypes";
 import { authHelper } from "../utils/authHelpers";
+const jwt = require("jsonwebtoken");
 export class AuthService {
   static verifyPassword = async (loginDetails: {
     email: string;
@@ -37,5 +38,12 @@ export class AuthService {
     }
 
     return { userData, token };
+  };
+  static verifyStaffAuthToken = async (token) => {
+    const tokenVerified = await jwt.verify(
+      token,
+      process.env.JWT_STAFF_SECRET_KEY
+    );
+    return tokenVerified;
   };
 }

@@ -11,3 +11,8 @@ deliveryRouter.post(
   "/updateDeliveryStatus",
   DeliveryController.updateDeliveryStatus
 );
+deliveryRouter.post(
+  "/getDeliveriesCount",
+  DeliveryController.getDeliveriesCount
+);
+deliveryRouter.post("/getRestaurantInfo", DeliveryController.getRestaurantInfo);

@@ -4,17 +4,31 @@ import { DeliveriesEntity } from "../entity/deliveries.entity";
 import { EnumDeliveryStatus } from "../types/staffTypes";
 import { OrdersEntity } from "../entity/orders.entity";
 import { EnumOrderStatus } from "../types/RestaurentsTypes";
-import { EntityManager } from "typeorm";
+import { Between, EntityManager } from "typeorm";
+import { RestaurantStaffEntity } from "../entity/restaurantStaff.entity";
 
 export class DeliveryService {
-  static getAllDeliveries = async (restaurantId) => {
+  static getAllDeliveries = async (
+    restaurantId: string,
+    dateFilter: {
+      fromDate: Date;
+      toDate: Date;
+    },
+    deliveryStatusFilter: EnumDeliveryStatus
+  ) => {
     const deliveriesRepo = dataSource.getRepository(DeliveriesEntity);
-
+    const filter = {
+      createdAt: Between(dateFilter.fromDate, dateFilter.toDate),
+    };
+    if (deliveryStatusFilter) {
+      filter["status"] = deliveryStatusFilter;
+    }
     return deliveriesRepo.find({
       where: {
         order: {
           restaurantId,
         },
+        ...filter,
       },
       relations: {
         order: {
@@ -115,5 +129,98 @@ export class DeliveryService {
         );
       }
     });
+  };
+
+  static getStaffDetailsById = async (staffId: number) => {
+    const stafFRepo = dataSource.getRepository(RestaurantStaffEntity);
+    const staffDetails = await stafFRepo.findOne({
+      where: {
+        id: staffId,
+      },
+    });
+    if (!staffDetails) {
+      throw new Error("Staff not found");
+    }
+    return staffDetails;
+  };
+
+  static getDeliveriesCount = async (
+    restaurantId: string,
+    dateFilter: {
+      fromDate: Date;
+      toDate: Date;
+    }
+  ) => {
+    const deliveriesRepo = dataSource.getRepository(DeliveriesEntity);
+
+    const deliveriesCount = {
+      pending: 0,
+      in_transit: 0,
+      being_prepared: 0,
+      delivered: 0,
+      failed: 0,
+    };
+
+    deliveriesCount.pending = await deliveriesRepo.count({
+      where: {
+        order: {
+          restaurantId,
+        },
+        createdAt: Between(dateFilter.fromDate, dateFilter.toDate),
+        status: EnumDeliveryStatus.PENDING,
+      },
+      relations: {
+        order: true,
+      },
+    });
+    deliveriesCount.being_prepared = await deliveriesRepo.count({
+      where: {
+        order: {
+          restaurantId,
+        },
+        createdAt: Between(dateFilter.fromDate, dateFilter.toDate),
+        status: EnumDeliveryStatus.BEING_PREPARED,
+      },
+      relations: {
+        order: true,
+      },
+    });
+    deliveriesCount.failed = await deliveriesRepo.count({
+      where: {
+        order: {
+          restaurantId,
+        },
+        createdAt: Between(dateFilter.fromDate, dateFilter.toDate),
+        status: EnumDeliveryStatus.FAILED,
+      },
+      relations: {
+        order: true,
+      },
+    });
+    deliveriesCount.delivered = await deliveriesRepo.count({
+      where: {
+        order: {
+          restaurantId,
+        },
+        createdAt: Between(dateFilter.fromDate, dateFilter.toDate),
+        status: EnumDeliveryStatus.DELIVERED,
+      },
+      relations: {
+        order: true,
+      },
+    });
+    deliveriesCount.in_transit = await deliveriesRepo.count({
+      where: {
+        order: {
+          restaurantId,
+        },
+        createdAt: Between(dateFilter.fromDate, dateFilter.toDate),
+        status: EnumDeliveryStatus.IN_TRANSIT,
+      },
+      relations: {
+        order: true,
+      },
+    });
+    return deliveriesCount;
   };
 }

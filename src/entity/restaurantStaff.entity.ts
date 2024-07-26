@@ -10,10 +10,8 @@ import { EnumStaffRoles } from "../types/staffTypes";
 
 @Entity({ name: "restaurant_staff" })
 export class RestaurantStaffEntity {
-  @PrimaryGeneratedColumn("uuid", {
-    name: "id",
-  })
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   staffName: string;

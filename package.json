@@ -19,6 +19,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.6",
+    "@types/redux-persist": "^4.3.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -33,6 +35,8 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.9.3",
     "nodemon": "^3.1.0",
+    "react-redux": "^9.1.2",
+    "redux-persist": "^6.0.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",
     "zod": "^3.22.4"

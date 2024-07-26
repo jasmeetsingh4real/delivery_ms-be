@@ -15,3 +15,12 @@ export enum EnumDeliveryStatus {
   DELIVERED = "delivered",
   FAILED = "failed",
 }
+export enum EnumRestaurantStatus {
+  ACTIVE = "active",
+  CLOSED = "closed",
+}
+export enum EnumImageType {
+  RESTAURANT_IMAGE = "restaurant_image",
+  FOOD_ITEM_IMAGE = "food_item_image",
+  FOOD_ITEM_OPTION_IMAGE = "food_item_option_image",
+}
